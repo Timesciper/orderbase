@@ -2,6 +2,10 @@ from django.db import models
 from accounts.models import CustomUser
 
 
+class CoreAccount(models.Model):
+    system_money = models.FloatField(default=0)
+
+
 class Item (models.Model):
     name = models.CharField(max_length=30, verbose_name='Название позиции')
 
@@ -16,8 +20,8 @@ class Order (models.Model):
     executor = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name='Исполнитель', related_name='executing_orders', blank=True, null=True)
     status = models.CharField(choices=ORDER_STATUS, default='open', max_length=20)
     items = models.ManyToManyField(Item, blank=True)
+    __status_original = None
 
     class Meta:
         verbose_name = 'Заказ'
         verbose_name_plural = 'Заказы'
-

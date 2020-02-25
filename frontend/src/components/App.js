@@ -15,6 +15,7 @@ import {loadUser} from "../actions/auth";
 import ProfileCard from "./profiles/profileCard";
 import OrdersTable from "./orders/OrdersTable";
 import OrderCard from "./orders/OrderCard";
+import CreateCard from "./orders/CreateCard";
 
 
 
@@ -49,6 +50,7 @@ class App extends Component {
                         <PrivateRoute component={ProfileCard} path={'/profile'}/>
                         <PrivateRoute component={OrdersTable} path={'/orders'}/>
                         <PrivateRoute component={OrderCardPick} path={'/order/:id'} />
+                        <PrivateRoute component={CreateCard} path={'/create'}/>
                     </Router>
                 </AlertProvider>
             </Provider>

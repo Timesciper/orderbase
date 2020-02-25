@@ -10,3 +10,9 @@ class CustomUser(AbstractUser):
     class Meta:
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
+
+    def delete(self, using=None, keep_parents=False):
+        if self.username == 'System':
+            pass
+        else:
+            super(CustomUser, self).delete(self)
