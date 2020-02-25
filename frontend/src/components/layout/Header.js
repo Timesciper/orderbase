@@ -27,7 +27,12 @@ class HeaderConstructed extends Component {
         // если system - все заказы, профиль
         let user='None';
         let menu = [];
-        const defaultMenu =
+
+        if (this.props.auth.isAuthenticated){
+            if (this.props.auth.user){
+            user = this.props.auth.user.username;
+            if (this.props.auth.user.user_type==='exe'){
+                menu =
            [
 
                {
@@ -41,7 +46,7 @@ class HeaderConstructed extends Component {
                    type: 'link',
                    payload: {
                        text: 'Мои заказы',
-                       url: '/myorders'
+                       url: '/myorders/'+this.props.auth.user.id.toString()+'/'
                    }
                },
                {
@@ -52,18 +57,13 @@ class HeaderConstructed extends Component {
                    }
                }
                ];
-        if (this.props.auth.isAuthenticated){
-            if (this.props.auth.user){
-            user = this.props.auth.user.username;
-            if (this.props.auth.user.user_type==='exe'){
-                menu = defaultMenu
             }else if(this.props.auth.user.user_type==='work'){
                 menu = [
                     {
                         type: 'link',
                         payload: {
                             text: 'Мои заказы',
-                            url: '/myorders'
+                            url: '/myorders/'+this.props.auth.user.id.toString()+'/'
                         }
                     },
                     {

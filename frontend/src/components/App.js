@@ -14,6 +14,7 @@ import Alerts from './layout/Alerts'
 import {loadUser} from "../actions/auth";
 import ProfileCard from "./profiles/profileCard";
 import OrdersTable from "./orders/OrdersTable";
+import OrderCard from "./orders/OrderCard";
 
 
 
@@ -22,6 +23,15 @@ const alertOptions = {
     position: "top left"
 };
 
+
+function getFinder({match}) {
+    return <OrdersTable find={match.params.id}/>
+
+}
+function OrderCardPick({match}) {
+    return <OrderCard target={match.params.id}/>
+
+}
 
 class App extends Component {
     componentDidMount(){
@@ -35,8 +45,10 @@ class App extends Component {
                     <Router >
                         <PrivateRoute component={HeaderConstructed}/>
                         <Route component={Login} path={'/login'}/>
+                        <PrivateRoute component={getFinder} path={'/myorders/:id'}/>
                         <PrivateRoute component={ProfileCard} path={'/profile'}/>
                         <PrivateRoute component={OrdersTable} path={'/orders'}/>
+                        <PrivateRoute component={OrderCardPick} path={'/order/:id'} />
                     </Router>
                 </AlertProvider>
             </Provider>

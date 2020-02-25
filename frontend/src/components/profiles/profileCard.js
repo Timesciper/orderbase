@@ -28,7 +28,7 @@ class ProfileCard extends Component {
             if (userType === 'system') {
                 balanceStr = 'Площадка заработала ' + balance.toString()
             } else {
-                balanceStr = 'Вы потратили на заказы' + balance.toString()
+                balanceStr = 'Вы потратили на заказы ' + balance.toString()
             }
         }
 
