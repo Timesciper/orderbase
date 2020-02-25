@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import PropTypes from 'prop-types'
 import Select from 'react-select';
 import { Button, ButtonsToolbar, Clay } from '@n3/kit'
-import {putOrder, getOrders, deleteOrder} from '../../actions/orders'
+import {putOrder, getOrders, deleteOrder, jobSDone} from '../../actions/orders'
 
 
 class OrderCard extends Component {
@@ -86,6 +86,35 @@ class OrderCard extends Component {
         const onDelete =() => {
             this.props.deleteOrder(this.state.order.id);
         };
+        const takeTheJob = () => {
+            let status = 'in_progress';
+            if (this.state.order.status === 'in_progress'){
+                status = 'finished'
+            }
+            let data ={};
+            if (status === 'in_progress'){
+                 data = {
+                id: this.state.order.id,
+                price: this.state.price,
+                items: this.state.items,
+                status: status,
+                creator: this.state.order.creator,
+                executor: this.props.user.id
+            };
+                 this.props.putOrder(data)
+            }
+        };
+        const completeOrder = () => {
+            const data = {
+                id: this.state.order.id,
+                price: this.state.price,
+                items: this.state.items,
+                status: this.state.order.status,
+                creator: this.state.order.creator.id,
+                executor: this.props.user.id
+            };
+            this.props.jobSDone(data);
+        };
         const onSave = () => {
 
             const data = {
@@ -100,9 +129,19 @@ class OrderCard extends Component {
             this.props.getOrders()
         };
         const status = statuses[order.status];
+        let hidden = true;
+        let hiddenComplete = true;
         switch (userType) {
             case 'exe':
                 disabled = true;
+                if (order.status==="open"){
+                    hidden = false
+                }else{
+                    hidden = true
+                }
+                if(order.executor===this.props.user.id){
+                    hiddenComplete = false
+                }
                 return (
                     <div className={'container'}>
                     <h3>Заказ № {order.id}. Статус - {status} </h3>
@@ -119,9 +158,13 @@ class OrderCard extends Component {
                     <hr/>
                         <h4>Стоимость заказа {order.price}</h4>
                         <hr/>
-
+                        <div hidden={hidden}>
+                        <Button  onClick={takeTheJob}>Взять заказ</Button>
+                        </div>
+                        <div hidden={hiddenComplete}>
+                        <Button  onClick={completeOrder}>Завершить заказ</Button>
+                        </div>
                     </div>
-
                 );
             case 'work':
                 if(order.status==='open'){
@@ -188,4 +231,4 @@ const mapStateToProps = state => ({
     items: state.items.items
 });
 
-export default connect(mapStateToProps,{putOrder, getOrders, deleteOrder})(OrderCard)
+export default connect(mapStateToProps,{putOrder, getOrders, deleteOrder, jobSDone})(OrderCard)

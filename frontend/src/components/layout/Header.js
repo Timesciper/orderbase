@@ -20,7 +20,7 @@ class HeaderConstructed extends Component {
     render() {
         const logo = {
             img: null,
-            title: 'Заказы'
+            title: 'Orders'
         };
         // если юзер - исполнитель, то ему доступны все заказы, свои заказы, профиль
         // если юзер - работодатель, то ему доступна кнопка создать заказ, мои заказы, профиль

@@ -9,19 +9,19 @@ class OrderViewSet(viewsets.ModelViewSet):
     permission_classes = [
         permissions.AllowAny
     ]
-
     """
     def get_queryset(self):
         if self.request.user:
             return Order.objects.all()
     """
-
     serializer_class = OrderSerializer
 
 
 class ItemViewSet(viewsets.ModelViewSet):
     queryset = Item.objects.all()
     permission_classes = [
-        permissions.AllowAny
+        permissions.IsAuthenticated
     ]
     serializer_class = ItemSerializer
+
+
