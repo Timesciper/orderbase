@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'accounts',
+    'frontend',
     'main_app',
     'rest_framework',
     'django.contrib.admin',
@@ -52,6 +53,11 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',)
+}
+
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
 ROOT_URLCONF = 'orderbase.urls'
