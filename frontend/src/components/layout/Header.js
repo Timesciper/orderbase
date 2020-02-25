@@ -13,7 +13,7 @@ class HeaderConstructed extends Component {
     render() {
         const logo = {
             img: null,
-            title: 'Outsource'
+            title: 'Заказы'
         };
 
 
@@ -41,15 +41,15 @@ class HeaderConstructed extends Component {
                {
                    type: 'link',
                    payload: {
-                       text: 'Аутсорсеры',
-                       url: '/out'
+                       text: 'Заказы',
+                       url: '/orders'
                    }
                },
                {
                    type: 'link',
                    payload: {
-                       text: 'Компании',
-                       url: '/companies'
+                       text: 'Мои заказы',
+                       url: '/myorders'
                    }
                }
                ];
