@@ -33,21 +33,16 @@ class OrdersTable extends Component {
         // исполнитель
         if (user){
         if (user.user_type==='exe'){
-            console.log('EXE');
             if(this.props.find!==undefined){
-                console.log('NOT NULL');
-                console.log(this.props.find);
                 data = data.filter(order=>{
                     return order.executor===user.id
                 })
             }else{
-                console.log('we are here');
                 data = data.filter(order=>{
                     return order.status!=='finished' && order.executor===null
                 })
             }
         }else if(user.user_type==='work'){
-            console.log('WORKER');
             data = data.filter(order => {
                 return order.creator===user.id
             })

@@ -3,6 +3,7 @@ import Header from '@n3/kit/es/header';
 import '@n3/kit/dist/n3kit.css';
 import { connect } from 'react-redux';
 import { logout } from "../../actions/auth";
+import { getItems } from "../../actions/items";
 import {getOrders} from '../../actions/orders'
 import PropTypes from 'prop-types'
 
@@ -12,7 +13,8 @@ class HeaderConstructed extends Component {
         logout: PropTypes.func.isRequired
     };
     componentDidMount() {
-        this.props.getOrders()
+        this.props.getOrders();
+        this.props.getItems();
     }
 
     render() {
@@ -134,6 +136,7 @@ class HeaderConstructed extends Component {
 }
 const mapStateToProps = state => ({
     auth: state.auth,
-    orders: state.orders.orders
+    orders: state.orders.orders,
+    items: state.items.items
 });
-export default connect(mapStateToProps, {logout, getOrders})(HeaderConstructed);
+export default connect(mapStateToProps, {logout, getOrders, getItems})(HeaderConstructed);
