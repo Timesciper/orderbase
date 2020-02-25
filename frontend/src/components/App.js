@@ -33,10 +33,10 @@ class App extends Component {
                 <AlertProvider template={AlertTemplate} {...alertOptions}>
                     <Alerts/>
                     <Router >
-                        <HeaderConstructed/>
+                        <PrivateRoute component={HeaderConstructed}/>
                         <Route component={Login} path={'/login'}/>
-                        <Route component={ProfileCard} path={'/profile'}/>
-                        <Route component={OrdersTable} path={'/orders'}/>
+                        <PrivateRoute component={ProfileCard} path={'/profile'}/>
+                        <PrivateRoute component={OrdersTable} path={'/orders'}/>
                     </Router>
                 </AlertProvider>
             </Provider>

@@ -31,7 +31,7 @@ export class Login extends Component {
         const { username,  password, isOpened } = this.state;
         const toggleOpened = () => {
         this.setState({
-            isOpened: !this.state.isOpened
+            isOpened: this.state.isOpened
         })
 
     };
@@ -51,7 +51,7 @@ export class Login extends Component {
         return (
             <>
 
-                <Modal show={isOpened} onHide={toggleOpened}>
+                <Modal show={isOpened} onHide={toggleOpened} hasCloseButton={false}>
 
 
                     <Modal.Body>
