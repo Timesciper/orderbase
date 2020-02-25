@@ -110,7 +110,7 @@ class OrderCard extends Component {
                 price: this.state.price,
                 items: this.state.items,
                 status: this.state.order.status,
-                creator: this.state.order.creator.id,
+                creator: this.state.order.creator,
                 executor: this.props.user.id
             };
             this.props.jobSDone(data);

@@ -52,10 +52,28 @@ export const createOrder = (data) => (dispatch, getState) => {
     }).catch(err => dispatch(returnErrors(err.response.data, err.response.status)))
 };
 
+
+
+function getUserData(id, dispatch, getState) {
+    const url = '/api/user/'+id.toString()+'/';
+    let data ={};
+    axios.get(url, tokenConfig(getState)).then(res => {
+        console.log('TIME');
+        console.log(res.data);
+        console.log('AAAAAAAAA');
+        data = dispatch({
+            data: res.data
+        })
+    });
+    return data
+}
+
+
+/*
 export const jobSDone = (data) => (dispatch, getState) => {
     const urlOrder = '/api/order/'+data.id.toString()+'/';  // этот заказ отработан
     let executor = data.executor; // айди выполнившего работу (current user)
-    let owner = data.owner; // тот, кто создал заказ
+    let owner = data.creator; // тот, кто создал заказ
     // что нужно сделать 1) найти систем юзера 2) изменить баланс исполнителя и заказчика
     // перевести заказ в выполненные
     const urlExec = '/api/user/'+executor.toString()+'/';
@@ -65,11 +83,14 @@ export const jobSDone = (data) => (dispatch, getState) => {
     executor = {};
     owner = {};
     axios.get(urlExec, tokenConfig(getState)).then(res => {
+                console.log('EXECUTOR');
+
         executor = res.data;
         execBalance = res.data.balance
     });
     let workBalance = 0;
     axios.get(urlOwner, tokenConfig(getState)).then(res => {
+        console.log('URLOWNER');
         owner = res.data;
         workBalance = res.data.balance
     });
@@ -85,12 +106,7 @@ export const jobSDone = (data) => (dispatch, getState) => {
     systemBalance+=rewardSystem;
     execBalance+=rewardWorker;
     workBalance+=rewardWorker;
-    axios.put(urlOrder, data, tokenConfig(getState)).then(res=>{
-        dispatch({
-            type: PUT_ORDER,
-            payload: res.data
-        })
-    });
+
     const ownerData = {
         id: owner.id,
         username: owner.username,
@@ -124,7 +140,6 @@ export const jobSDone = (data) => (dispatch, getState) => {
     }).catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
     axios.put(urlExec, exeData, tokenConfig(getState)).then(res => {
         console.log(res)
-
     }).catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
     axios.put(urlSystem, systemData, tokenConfig(getState)).then(res => {
         console.log(res)
@@ -136,5 +151,20 @@ export const jobSDone = (data) => (dispatch, getState) => {
             payload: res.data
         })
     }).catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
+
+};
+*/
+
+
+export const jobSDone = (data) => (dispatch, getState) => {
+    const urlOrder = '/api/order/'+data.id.toString()+'/';
+    let executor = data.executor; // айди выполнившего работу (current user)
+    let creator = data.creator; // тот, кто создал заказ
+    let exData = {};
+    axios.get('/api/user/'+executor).then(res => {
+        console.log(res.data);
+        exData=res
+    });
+    console.log(exData);
 
 };
