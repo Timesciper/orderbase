@@ -2,9 +2,8 @@ import React, { Component } from 'react'
 import {connect} from "react-redux";
 import PropTypes from 'prop-types'
 import {getOrders} from "../../actions/orders";
-import BaseTable, {Column} from "react-base-table";
-import 'react-base-table/styles.css'
-import {AutoResizer} from "react-base-table";
+import '@n3/react-full-table/dist/n3-react-full-table.css';
+import { FullTable } from '@n3/react-full-table';
 
 class OrdersTable extends Component {
     static propTypes = {
@@ -22,46 +21,109 @@ class OrdersTable extends Component {
     }
 
     render() {
-        const orders = this.props.orders;
+        const statusesTranslated = {
+            finished: 'Завершен',
+            in_progress: 'Выполняется',
+            open: 'Открыт'
+        };
+        let data = this.props.orders;
         const user = this.props.user;
-        // 1-st - we want to get all open orders (find = false, user = exe)
-        let finalOrders = [];
-        if (user.user_type==='exe' && this.props.find===false){
-                finalOrders = orders.filter(order => {
-                    return order.status==='open'
-                })
-            }else if(user.user_type==='exe' && this.props.find!==false)
-            {
-                finalOrders = orders.filter(order => {
-                    if (order.executor!==null){
-                        return order.executor.toString() === user.id.toString();
-                    }else{
-                        return false
-                    }
+        // если пользователь - исполнитель, то смотрим, передаем ли мы find, если да, то выбираем заказы, котрорые он
+        // выполнил\выполшняет, если нет - то все заказы, которые не являются выполненными, и у которых не назначет
+        // исполнитель
+        if (user){
+        if (user.user_type==='exe'){
+            console.log('EXE');
+            if(this.props.find!==undefined){
+                console.log('NOT NULL');
+                console.log(this.props.find);
+                data = data.filter(order=>{
+                    return order.executor===user.id
                 })
             }else{
-            finalOrders = orders.filter(order=>{
-                if (order.creator!==null){
-                    return order.creator.toString() === user.id.toString();
-                }else{
-                    return false
-                }
+                console.log('we are here');
+                data = data.filter(order=>{
+                    return order.status!=='finished' && order.executor===null
+                })
+            }
+        }else if(user.user_type==='work'){
+            console.log('WORKER');
+            data = data.filter(order => {
+                return order.creator===user.id
             })
         }
-        if (user.user_type==='system'){
-            finalOrders = orders
+
         }
-
-
+        const columns = {
+            id: {
+                title: 'Номер заказа',
+                type: 'link',
+                getHref: ({id}) => '/order/'+id+'/'
+            },
+            price: {
+                title: 'Цена заказа',
+                canDisable: true
+            },
+            status: {
+                title: 'Статус заказа',
+                canDisable: true,
+                renderCell: ({status}) => statusesTranslated[status]
+            }
+        };
+        const rootIds = ['id', 'status', 'price'];
+        function delay(ms) {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve();
+                }, ms);
+            });
+        }
+        const loadItems = async ({
+            sort: {
+                param: sortParam,
+                asc: sortAsc
+            }
+        }, {serializedValues}) => {
+            await delay(350);
+            const parsedPerPage = serializedValues.perPage;
+             const sortedData = data.sort((item1, item2) => {
+                 const value1 = item1[sortParam];
+                 const value2 = item2[sortParam];
+                 if (value1 === value2){
+                     return 0;
+                 }
+                 if (sortAsc === (value1 > value2)){
+                     return 1;
+                 }
+                 return -1;
+             });
+            const page = serializedValues || 1;
+            const slicedData = parsedPerPage ? sortedData.slice((page-1) * parsedPerPage, page * parsedPerPage) : sortedData;
+            return {
+                items: slicedData,
+                additional: {
+                    count: sortedData.length,
+                }
+            }
+        };
         return (
-            <div className={'container'}>
-            <BaseTable width={900} height={50} data={finalOrders}>
-                <Column width={300} dataKey={'id'} key={'id'} title={'ID'}/>
-                <Column width={300} dataKey={'price'} key={'price'} title={'price'}/>
-                <Column width={300} dataKey={'status'} key={'status'} title={'status'}/>
-            </BaseTable>
-            </div>
+            <
+                FullTable
+                minColumnsNumber = {3}
+                top = {20}
+                fixedLeftCols = {2}
+                placeholder = 'Нет записей'
+                columns = {columns}
+                rootIds = {rootIds}
+                loadItems = {loadItems}
+                appliedFilters = {
+                    {
+                        perPage: 10
+                    }
+                }
+            />
         )
+
     }
 }
 

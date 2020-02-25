@@ -31,7 +31,7 @@
     "@n3/kit": "^0.14.0",
     "@n3/react-form-builder": "^0.5.1",
     "@n3/react-form-kit": "^0.6.4",
-    "@n3/react-full-table": "^0.8.1",
+    "@n3/react-full-table": "^0.8.2",
     "af-react-table": "^1.4.8",
     "axios": "^0.19.0",
     "css-loader": "^3.2.0",

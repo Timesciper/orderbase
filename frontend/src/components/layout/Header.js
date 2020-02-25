@@ -20,33 +20,18 @@ class HeaderConstructed extends Component {
             img: null,
             title: 'Заказы'
         };
-
+        // если юзер - исполнитель, то ему доступны все заказы, свои заказы, профиль
+        // если юзер - работодатель, то ему доступна кнопка создать заказ, мои заказы, профиль
+        // если system - все заказы, профиль
         let user='None';
-        if (this.props.auth.isAuthenticated){
-            if (this.props.user!==null){
-            user = this.props.auth.user.username;
-
-            }else{
-                user = 'Login'
-            }
-        }else{
-            user = 'Login'
-        }
-        const dropDownOptions = [
-
-            {
-                component: 'button',
-                onClick: this.props.logout,
-                label: 'Выйти'
-            }
-        ];
-         const menu =
+        let menu = [];
+        const defaultMenu =
            [
 
                {
                    type: 'link',
                    payload: {
-                       text: 'Заказы',
+                       text: 'Открытые заказы',
                        url: '/orders'
                    }
                },
@@ -65,6 +50,70 @@ class HeaderConstructed extends Component {
                    }
                }
                ];
+        if (this.props.auth.isAuthenticated){
+            if (this.props.auth.user){
+            user = this.props.auth.user.username;
+            if (this.props.auth.user.user_type==='exe'){
+                menu = defaultMenu
+            }else if(this.props.auth.user.user_type==='work'){
+                menu = [
+                    {
+                        type: 'link',
+                        payload: {
+                            text: 'Мои заказы',
+                            url: '/myorders'
+                        }
+                    },
+                    {
+                        type: 'link',
+                        payload: {
+                            text: 'Созддать заказ',
+                            url: '/create'
+                        }
+                    },
+                    {
+                        type: 'link',
+                        payload: {
+                            text: 'Профиль',
+                            url: '/profile'
+                        }
+                    },
+
+                ]
+            }else if(this.props.auth.user.user_type==='system'){
+                menu = [
+                    {
+                        type: 'link',
+                        payload: {
+                            text: 'Все заказы',
+                            url: '/orders'
+                        }
+                    },
+                    {
+                        type: 'link',
+                        payload: {
+                            text: 'Профиль',
+                            url: '/myprofile'
+                        }
+                    }
+                ]
+            }
+
+            }else{
+                user = 'Login';
+            }
+        }else{
+            user = 'Login'
+        }
+        const dropDownOptions = [
+
+            {
+                component: 'button',
+                onClick: this.props.logout,
+                label: 'Выйти'
+            }
+        ];
+
 
 
         return (<>
