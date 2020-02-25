@@ -17,27 +17,32 @@ class HeaderConstructed extends Component {
         };
 
 
+    // need to make a different header for 2 user types - executor and
 
-        const dropDownOptions = [
-            {
-                component: 'button',
-                onClick: this.props.logout,
-                label: 'Выйти'
-            }
-        ];
 
         let user='None';
+        let userBalance = '0.0';
         if (this.props.auth.isAuthenticated){
             if (this.props.user!==null){
-            user = this.props.auth.user.username
+            user = this.props.auth.user.username;
+            userBalance = this.props.auth.user.balance;
             }else{
                 user = 'Login'
             }
         }else{
             user = 'Login'
         }
+        const dropDownOptions = [
+
+            {
+                component: 'button',
+                onClick: this.props.logout,
+                label: 'Выйти'
+            }
+        ];
          const menu =
            [
+
                {
                    type: 'link',
                    payload: {
@@ -50,6 +55,13 @@ class HeaderConstructed extends Component {
                    payload: {
                        text: 'Мои заказы',
                        url: '/myorders'
+                   }
+               },
+               {
+                   type: 'link',
+                   payload: {
+                       text: 'Баланс',
+                       url: '/mybalance'
                    }
                }
                ];

@@ -17,7 +17,7 @@ import {loadUser} from "../actions/auth";
 
 const alertOptions = {
     timeout: 3000,
-    position: "top right"
+    position: "top left"
 };
 
 
