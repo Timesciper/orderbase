@@ -4,8 +4,7 @@ import { Provider } from 'react-redux';
 import store from '../store';
 import '@n3/react-full-table/dist/n3-react-full-table.css';
 import HeaderConstructed from './layout/Header';
-import { HashRouter as Router, Switch, Route, Redirect } from "react-router-dom";
-import TableCollector from "./outsource/TableCollector";
+import { HashRouter as Router,Route } from "react-router-dom";
 import PrivateRoute from './common/PrivateRoute'
 import Login from "./accounts/login";
 
@@ -33,7 +32,6 @@ class App extends Component {
                     <Alerts/>
                     <Router >
                         <HeaderConstructed/>
-                        <PrivateRoute component={TableCollector} path={'/out'}/>
                         <Route component={Login} path={'/login'}/>
                     </Router>
                 </AlertProvider>
