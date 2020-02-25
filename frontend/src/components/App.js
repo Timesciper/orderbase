@@ -12,6 +12,8 @@ import { Provider as AlertProvider } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
 import Alerts from './layout/Alerts'
 import {loadUser} from "../actions/auth";
+import ProfileCard from "./profiles/profileCard";
+import OrdersTable from "./orders/OrdersTable";
 
 
 
@@ -33,6 +35,8 @@ class App extends Component {
                     <Router >
                         <HeaderConstructed/>
                         <Route component={Login} path={'/login'}/>
+                        <Route component={ProfileCard} path={'/profile'}/>
+                        <Route component={OrdersTable} path={'/orders'}/>
                     </Router>
                 </AlertProvider>
             </Provider>

@@ -3,6 +3,7 @@ import Header from '@n3/kit/es/header';
 import '@n3/kit/dist/n3kit.css';
 import { connect } from 'react-redux';
 import { logout } from "../../actions/auth";
+import {getOrders} from '../../actions/orders'
 import PropTypes from 'prop-types'
 
 class HeaderConstructed extends Component {
@@ -10,22 +11,21 @@ class HeaderConstructed extends Component {
         auth: PropTypes.object.isRequired,
         logout: PropTypes.func.isRequired
     };
+    componentDidMount() {
+        this.props.getOrders()
+    }
+
     render() {
         const logo = {
             img: null,
             title: 'Заказы'
         };
 
-
-    // need to make a different header for 2 user types - executor and
-
-
         let user='None';
-        let userBalance = '0.0';
         if (this.props.auth.isAuthenticated){
             if (this.props.user!==null){
             user = this.props.auth.user.username;
-            userBalance = this.props.auth.user.balance;
+
             }else{
                 user = 'Login'
             }
@@ -60,8 +60,8 @@ class HeaderConstructed extends Component {
                {
                    type: 'link',
                    payload: {
-                       text: 'Баланс',
-                       url: '/mybalance'
+                       text: 'Профиль',
+                       url: '/profile'
                    }
                }
                ];
@@ -84,6 +84,7 @@ class HeaderConstructed extends Component {
     }
 }
 const mapStateToProps = state => ({
-    auth: state.auth
+    auth: state.auth,
+    orders: state.orders.orders
 });
-export default connect(mapStateToProps, {logout})(HeaderConstructed);
+export default connect(mapStateToProps, {logout, getOrders})(HeaderConstructed);
