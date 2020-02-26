@@ -7,13 +7,8 @@ class OrderViewSet(viewsets.ModelViewSet):
 
     queryset = Order.objects.all()
     permission_classes = [
-        permissions.AllowAny
+        permissions.IsAuthenticated
     ]
-    """
-    def get_queryset(self):
-        if self.request.user:
-            return Order.objects.all()
-    """
     serializer_class = OrderSerializer
 
 

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.conf import settings
 
 
 class CustomUser(AbstractUser):
@@ -12,7 +13,7 @@ class CustomUser(AbstractUser):
         verbose_name_plural = 'Пользователи'
 
     def delete(self, using=None, keep_parents=False):
-        if self.username == 'System':
+        if self.username == settings.SYSTEM_USER_USERNAME:
             pass
         else:
             super(CustomUser, self).delete(self)

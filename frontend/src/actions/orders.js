@@ -5,17 +5,23 @@ import {
     PUT_ORDER,
     GET_ORDERS,
     DELETE_ORDER,
-    CREATE_ORDER
+    CREATE_ORDER, FIND_ORDERS
 } from "./types";
 
 export const getOrders = (value) => (dispatch, getState) => {
     axios.get('/api/order/', tokenConfig(getState)).then(res => {
-            dispatch({
-                type: GET_ORDERS,
-                payload: res.data
-            })
+            if (value) {
+                dispatch({
+                    type: FIND_ORDERS,
+                    payload: value
+                })
+            } else {
+                dispatch({
+                    type: GET_ORDERS,
+                    payload: res.data
+                })
+            }
         }
-
 
     ).catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
 };
@@ -54,19 +60,7 @@ export const createOrder = (data) => (dispatch, getState) => {
 
 
 
-function getUserData(id, dispatch, getState) {
-    const url = '/api/user/'+id.toString()+'/';
-    let data ={};
-    axios.get(url, tokenConfig(getState)).then(res => {
-        console.log('TIME');
-        console.log(res.data);
-        console.log('AAAAAAAAA');
-        data = dispatch({
-            data: res.data
-        })
-    });
-    return data
-}
+
 
 
 /*
@@ -156,15 +150,13 @@ export const jobSDone = (data) => (dispatch, getState) => {
 */
 
 
-export const jobSDone = (data) => (dispatch, getState) => {
-    const urlOrder = '/api/order/'+data.id.toString()+'/';
-    let executor = data.executor; // айди выполнившего работу (current user)
-    let creator = data.creator; // тот, кто создал заказ
-    let exData = {};
-    axios.get('/api/user/'+executor).then(res => {
-        console.log(res.data);
-        exData=res
-    });
-    console.log(exData);
 
+export const completeOrder = (data) => (dispatch, getState) =>  {
+    axios.post('/api/final_order', data, tokenConfig(getState)).then(res => {
+        dispatch({
+            type: DELETE_ORDER,
+            payload: 22
+        })
+
+    });
 };

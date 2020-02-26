@@ -15,6 +15,7 @@ class CreateCard extends Component {
         this.props.getItems()
     }
     state = {
+        hidden: false,
         price: 0.0,
         status: 'open',
         creator: this.props.user.id,
@@ -30,7 +31,10 @@ class CreateCard extends Component {
             executor: null,
             items: this.state.items
             };
-            this.props.createOrder(data)
+            this.props.createOrder(data);
+            this.setState({
+                hidden: true
+            })
         };
         const handleChange = (event) => {
             this.setState({
@@ -56,7 +60,7 @@ class CreateCard extends Component {
             )
         }
         return (
-            <div className={'container'}>
+            <div hidden={this.state.hidden} className={'container'}>
                 <hr/>
                     <h3>Создание нового заказа. Статус - Открытый </h3>
                     <hr/>

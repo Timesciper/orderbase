@@ -14,11 +14,26 @@ class OrdersTable extends Component {
 
     componentDidMount() {
         if (this.props.find!==false){
-            getOrders(this.props.find)
+            this.props.getOrders(this.props.find)
         }else{
-            getOrders()
+            this.props.getOrders()
         }
     }
+    componentDidUpdate(){
+        if (this.state.getOrders){
+        if (this.props.find!==false){
+            this.props.getOrders(this.props.find)
+        }else{
+            this.props.getOrders()
+        }
+    }
+    this.setState({
+        getOrders: false
+    })
+    }
+    state={
+        getOrders: true
+    };
 
     render() {
         const statusesTranslated = {

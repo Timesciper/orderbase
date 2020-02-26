@@ -2,10 +2,6 @@ from django.db import models
 from accounts.models import CustomUser
 
 
-class CoreAccount(models.Model):
-    system_money = models.FloatField(default=0)
-
-
 class Item (models.Model):
     name = models.CharField(max_length=30, verbose_name='Название позиции')
 

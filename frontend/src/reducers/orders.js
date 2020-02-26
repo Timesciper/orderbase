@@ -6,6 +6,7 @@ const initialState = {
 export default function (state=initialState, action) {
     switch (action.type) {
         case GET_ORDERS:
+            state.orders = [];
             return {
                 ...state,
                 orders: action.payload
@@ -14,7 +15,7 @@ export default function (state=initialState, action) {
             return {
                 ...state,
                 orders: state.orders.filter(order => {
-                    return (order.executor.toString()===state.auth.user.id.toString() || order.creator.toString()===state.auth.user.id.toString())
+                    return (order.executor.toString()===action.payload || order.creator.toString()===action.payload || order.status===action.payload )
                 })
             };
         case DELETE_ORDER:

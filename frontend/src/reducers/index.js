@@ -5,6 +5,18 @@ import messages from './messages'
 import orders from './orders'
 import items from './items'
 
-export default combineReducers({
-    auth, errors, messages, orders, items
-});
+
+
+const reducers = {
+    auth: auth,
+    errors: errors,
+    messages: messages,
+    orders: orders,
+    items: items
+};
+
+export default combineReducers(
+    {
+        ...reducers,
+
+    });

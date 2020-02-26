@@ -36,10 +36,3 @@ class UserViewSet(viewsets.ModelViewSet):
 
     serializer_class = UserSerializer
 
-
-class SystemViewSet(viewsets.ModelViewSet):
-    queryset = CustomUser.objects.all().filter(user_type='system')
-    permission_classes = [
-        permissions.AllowAny
-    ]
-    serializer_class = UserSerializer

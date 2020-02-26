@@ -3,8 +3,8 @@ import {connect} from "react-redux";
 import PropTypes from 'prop-types'
 import Select from 'react-select';
 import { Button, ButtonsToolbar, Clay } from '@n3/kit'
-import {putOrder, getOrders, deleteOrder, jobSDone} from '../../actions/orders'
-
+import {putOrder, getOrders, deleteOrder, completeOrder} from '../../actions/orders'
+import {Input} from '@n3/kit'
 
 class OrderCard extends Component {
     static propTypes = {
@@ -14,6 +14,7 @@ class OrderCard extends Component {
     };
     state = {
         items: [],
+        hidden: false,
         price: 0,
         creator: '',
         executor: '',
@@ -85,35 +86,40 @@ class OrderCard extends Component {
         }
         const onDelete =() => {
             this.props.deleteOrder(this.state.order.id);
+            this.setState({
+                hidden: true
+            })
         };
         const takeTheJob = () => {
-            let status = 'in_progress';
-            if (this.state.order.status === 'in_progress'){
-                status = 'finished'
-            }
-            let data ={};
-            if (status === 'in_progress'){
-                 data = {
+                const data = {
                 id: this.state.order.id,
                 price: this.state.price,
                 items: this.state.items,
-                status: status,
+                status: 'in_progress',
                 creator: this.state.order.creator,
                 executor: this.props.user.id
             };
                  this.props.putOrder(data)
-            }
+        };
+        const handleChange = (event) => {
+            let order = this.state.order;
+            order.price = event.target.value;
+            this.setState({
+                order: order
+            })
         };
         const completeOrder = () => {
             const data = {
                 id: this.state.order.id,
-                price: this.state.price,
-                items: this.state.items,
-                status: this.state.order.status,
                 creator: this.state.order.creator,
-                executor: this.props.user.id
+                executor: this.state.order.executor
             };
-            this.props.jobSDone(data);
+            this.props.completeOrder(data);
+            // скрываем элемент =)
+            this.setState({
+                hidden: true
+            })
+
         };
         const onSave = () => {
 
@@ -126,7 +132,9 @@ class OrderCard extends Component {
                 executor: null
             };
             this.props.putOrder(data);
-            this.props.getOrders()
+            this.setState({
+                hidden: true
+            })
         };
         const status = statuses[order.status];
         let hidden = true;
@@ -142,8 +150,11 @@ class OrderCard extends Component {
                 if(order.executor===this.props.user.id){
                     hiddenComplete = false
                 }
+                if(order.status==='finished'){
+                    hiddenComplete = true
+                }
                 return (
-                    <div className={'container'}>
+                    <div hidden={this.state.hidden} className={'container'}>
                     <h3>Заказ № {order.id}. Статус - {status} </h3>
                     <hr/>
                     <Select onChange={handleSelect}
@@ -173,7 +184,7 @@ class OrderCard extends Component {
                     disabled = true;
                 }
                 return (
-                    <div className={'container'}>
+                    <div hidden={this.state.hidden}  className={'container'}>
                     <h3>Заказ № {order.id}. Статус - {status} </h3>
                     <hr/>
                     <Select onChange={handleSelect}
@@ -186,7 +197,8 @@ class OrderCard extends Component {
                             isMulti
                     />
                     <hr/>
-                        <h4>Стоимость заказа {order.price}</h4>
+                        <label>Стоимость заказа</label>
+                        <Input disabled={disabled} onChange={handleChange} type={'number'} value={this.state.order.price} className={'form-control'}/>
                         <hr/>
                         <ButtonsToolbar>
                         <Button disabled={disabled} onClick={onSave} color={'primary'}>Сохранить</Button>
@@ -200,7 +212,7 @@ class OrderCard extends Component {
             case 'system':
                 disabled = true;
                 return (
-                    <div className={'container'}>
+                    <div hidden={this.state.hidden}  className={'container'}>
                     <h3>Заказ № {order.id}. Статус - {status} </h3>
                     <hr/>
                     <Select onChange={handleSelect}
@@ -231,4 +243,4 @@ const mapStateToProps = state => ({
     items: state.items.items
 });
 
-export default connect(mapStateToProps,{putOrder, getOrders, deleteOrder, jobSDone})(OrderCard)
+export default connect(mapStateToProps,{putOrder, getOrders, deleteOrder, completeOrder})(OrderCard)
