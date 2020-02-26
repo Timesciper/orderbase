@@ -1,4 +1,4 @@
-from django.urls import path,include
+from django.urls import path, include
 from .api import LoginAPI, UserAPI
 from knox import views as knox_views
 
