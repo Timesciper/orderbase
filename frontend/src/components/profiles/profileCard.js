@@ -16,6 +16,7 @@ class ProfileCard extends Component {
     };
 
     render() {
+        console.log('RENDERPROFILE');
         const {username, email, firstName, lastName, balance, userType} = this.state;
         let balanceStr = '';
         let kostil = '';
@@ -26,6 +27,7 @@ class ProfileCard extends Component {
             balanceStr = 'Вы заработали ' + balance.toString()
         } else {
             if (userType === 'system') {
+                console.log('HERE');
                 balanceStr = 'Площадка заработала ' + balance.toString()
             } else {
                 balanceStr = 'Вы потратили на заказы ' + balance.toString()

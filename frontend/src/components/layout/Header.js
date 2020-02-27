@@ -95,7 +95,7 @@ class HeaderConstructed extends Component {
                         type: 'link',
                         payload: {
                             text: 'Профиль',
-                            url: '/myprofile'
+                            url: '/profile'
                         }
                     }
                 ]
