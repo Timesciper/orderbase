@@ -93,13 +93,16 @@ class OrderCard extends Component {
         const takeTheJob = () => {
                 const data = {
                 id: this.state.order.id,
-                price: this.state.price,
-                items: this.state.items,
+                price: this.state.order.price,
+                items: this.state.order.items,
                 status: 'in_progress',
                 creator: this.state.order.creator,
                 executor: this.props.user.id
             };
-                 this.props.putOrder(data)
+                 this.props.putOrder(data);
+                 this.setState({
+                hidden: true
+            })
         };
         const handleChange = (event) => {
             let order = this.state.order;
