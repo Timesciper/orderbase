@@ -73,7 +73,7 @@ class FinalOrder(View):
         order = update_order_status(order_id)
         money = order.price*0.85
         give_money(executor_id, money)
-        give_money(creator_id, money)
+        give_money(creator_id, order.price)
         system = get_or_create_system_user()
         system = give_money(system, order.price-money)
         if system:
