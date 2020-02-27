@@ -11,7 +11,9 @@ class OrdersTable extends Component {
         orders: PropTypes.array.isRequired,
         getOrders: PropTypes.func.isRequired
     };
-
+    state={
+        getOrders: true
+    };
     componentDidMount() {
         if (this.props.find!==false){
             this.props.getOrders(this.props.find)
@@ -26,16 +28,16 @@ class OrdersTable extends Component {
         }else{
             this.props.getOrders()
         }
-    }
-    this.setState({
+        this.setState({
         getOrders: false
     })
     }
-    state={
-        getOrders: true
-    };
+
+    }
+
 
     render() {
+        console.log(this.state.getOrders);
         const statusesTranslated = {
             finished: 'Завершен',
             in_progress: 'Выполняется',
